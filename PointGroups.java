@@ -10,11 +10,15 @@ public class PointGroups {
             firstPoints.add( (int) (100 * Math.random()) + 1);
         }
 
+        // System.out.println(firstPoints);
+
         ArrayList<Integer> secondPoints = new ArrayList<Integer>();
 
         for (int i = 0; i < 1000; i++) {
             secondPoints.add( (int) (100 * Math.random()) + 1);
         }
+
+        // System.out.println(secondPoints);
 
         System.out.println(findGroups(firstPoints, secondPoints));
 
@@ -24,18 +28,21 @@ public class PointGroups {
         int firstSize = firstPoints.size();
         int secondSize = secondPoints.size();
         
-        ArrayList<Integer> values = new ArrayList<Integer>();
+        ArrayList<Integer> groups = new ArrayList<Integer>();
         
+        ArrayList<Integer> firstPoints_sorted = new ArrayList<Integer>();
+        ArrayList<Integer> secondPoints_sorted = new ArrayList<Integer>();
+
         /* This gets us .1 % */
         for (int i = 1; i <= firstSize / 2; i++) {
-            values.add(i);
+            groups.add(i);
         }
         for (int i = 1; i <= firstSize / 2; i++) {
-            values.add(i);
+            groups.add(i);
         }
 
 
-        return values;
+        return groups;
     }
 }
 

@@ -57,11 +57,27 @@ public class PointGroups {
         System.out.println(input);
         System.out.println(output);
 
+
+        /* Find matches */
+        ArrayList<Boolean> matches = new ArrayList<Boolean>();
+
+        for (int i = 0; i < input.size(); i++) {
+            boolean match = false;
+            for (int j = 0; j < output.size(); j++) {
+                if (input.get(i).get(0) == output.get(j).get(0)) {
+                    match = true;
+                }
+            }
+            matches.add(match);
+        }
+
+        System.out.println(matches);
+
         /* This gets us .1 % */
-        for (int i = 1; i <= firstSize / 2; i++) {
+        for (int i = 1; i <= input.size(); i++) {
             groups.add(i);
         }
-        for (int i = 1; i <= firstSize / 2; i++) {
+        for (int i = 1; i <= output.size(); i++) {
             groups.add(i);
         }
 

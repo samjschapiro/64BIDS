@@ -3,12 +3,33 @@ import java.util.function.*;
 
 public class FastRead {
     public static void main(String[] args) {
-        System.out.println(fastRead(500, 900, "{\"timestamp\":15,\"book\":\"TSLA\",\"bids\":[{\"price\":800,\"volume\":50},{\"price\":850,\"volume\":110}],\"asks\":[]}\""));
-        /* {"timestamp":15,"book":"TSLA","bids":[{"price":800,"volume":50},{"price":850,"volume":110}],"asks":[]} */
-        System.out.println(fastRead(700, 900, "{\"timestamp\":0,\"book\":\"AAPL\",\"bids\":[],\"asks\":[{\"price\":600,\"volume\":10}]}\""));
-        System.out.println(fastRead(700, 900, "{\"timestamp\":0,\"book\":\"AAPL\",\"bids\":[],\"asks\":[]}\""));
+        String marketState1 = "{\"timestamp\":15,\"book\":\"TSLA\",\"bids\":[{\"price\":800,\"volume\":50},{\"price\":850,\"volume\":110}],\"asks\":[]}\"";
+        String marketState2 = "{\"timestamp\":0,\"book\":\"AAPL\",\"bids\":[],\"asks\":[{\"price\":600,\"volume\":10}]}\"";
+        String marketState3 = "{\"timestamp\":0,\"book\":\"AAPL\",\"bids\":[],\"asks\":[]}\"";
+        String marketState4 = "{\"timestamp\":0,\"book\":\"\",\"bids\":[],\"asks\":[]}\"";
+
+        System.out.println(fastRead(500, 900, marketState1));
+        System.out.println(fastRead(700, 900, marketState2));
+        /* 3 */ System.out.println(fastRead(700, 900, marketState3));
+        /* 3 parsed */ System.out.println(helperRead(marketState3, fastRead(700, 900, marketState3)));
+        /* 4 */ System.out.println(fastRead(700, 900, marketState4));
+        /* 4 parsed */ System.out.println(helperRead(marketState4, fastRead(700, 900, marketState4)));
     }
     
+    public static String helperRead(String marketState, String instructions) {
+        String[] instructionsParsed = instructions.split(" ");
+        String toReturn = "";
+        int index = 0;
+        for (String s: instructionsParsed) {
+            int num = Integer.parseInt(s.substring(1, s.length()));
+            if (s.charAt(0) == 'R') {
+                toReturn += marketState.substring(index, index+num);
+            }
+            index += num;
+        }
+        return toReturn;
+    }
+
     public static String fastRead(double maxBuyPrice, double minSellPrice, String marketState) {
        
         /*Instantiate variables for things to keep track of*/
@@ -44,6 +65,10 @@ public class FastRead {
                 } else if (isBook) {
                     read++;
                     if (currentChar == '"') { /*Reads book*/
+                        if (read == 1) {
+                            toReturn += " R" + read;
+                            return toReturn;
+                        }
                         toReturn += " R" + read + " S9"; /*Skips ,"bids":[*/
                         i += 9;
                         isBook = false;
@@ -99,7 +124,7 @@ public class FastRead {
                         read = 0;
                         continue;
                     } else if (currentChar == ',') { /* If comma, we skip "volume": */
-                        if (minSellPrice >= Double.parseDouble(askPrice)) {
+                        if (maxBuyPrice >= Double.parseDouble(askPrice)) {
                            toReturn += " R" + read;
                            return toReturn;
                         }

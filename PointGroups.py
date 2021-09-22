@@ -5,6 +5,7 @@ import random
 
 get_com = lambda lst: (sum([x for x, y in lst])/float(len(lst)), sum([y for x, y in lst])/float(len(lst)))
 distance = lambda point_a, point_b: sqrt((point_a[0] - point_b[0])**2+(point_a[1] - point_b[1])**2)
+# inertia = lambda lst, com: (sum([x**2 for x, y in lst]))
 
 def getMaxVector(points, com):
     max = (0, 0)

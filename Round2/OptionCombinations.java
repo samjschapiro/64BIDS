@@ -1,21 +1,28 @@
-package Round2;
-
 public class OptionCombinations {
-    public String countCombinations(int strikes, int expiries) {
+    public static String countCombinations(int strikes, int expiries) {
         int combinations = strikes * expiries * 2;
-        // (strikes * expires * 2) C (n) where n starts at 2 and ends at 12
         int profit = 0;
         for (int i = 2; i <= combinations; i++) {
-            // for each iteration, find the number of combinations
-            int factorial = 1;
+            int num = 1;
+            int denomL = 1;
+            int denomR = 1;
             for (int c = 2; c <= combinations; c++) {
-             	factorial *= c;   
+             	num *= c;   
             }
-            profit += factorial;
+            for (int d = 2; d <= i; d++) {
+                denomL *= d;
+            }
+            for (int l = 2; l <= (combinations - i); l++) {
+                denomR *= l;
+            }
+            profit += num / (denomL * denomR);
         }
-        return "" + profit;
+        System.out.println(profit);
+        return Integer.toString(profit);
     }
-    public void main(String[] args) {
-        countCombinations(1, 3);        
+    public static void main(String[] args) {
+        countCombinations(2, 3);
+        countCombinations(2, 1);
+        countCombinations(1, 1); 
     }
 }

@@ -1,28 +1,56 @@
+import java.math.*;
+
 public class OptionCombinations {
-    public static String countCombinations(int strikes, int expiries) {
-        int combinations = strikes * expiries * 2;
-        int profit = 0;
-        for (int i = 2; i <= combinations; i++) {
-            int num = 1;
-            int denomL = 1;
-            int denomR = 1;
-            for (int c = 2; c <= combinations; c++) {
-             	num *= c;   
-            }
-            for (int d = 2; d <= i; d++) {
-                denomL *= d;
-            }
-            for (int l = 2; l <= (combinations - i); l++) {
-                denomR *= l;
-            }
-            profit += num / (denomL * denomR);
+    public static int[] factorials = new int[100001];
+    public static int mod = 1000000007;
+    public static BigInteger MOD = BigInteger.valueOf(1000000007);
+
+    public static void calculateFactorials() {
+
+        long f = 1;
+
+        for (int i = 1; i < factorials.length; i++) {
+            f = (f * i) % mod;
+            factorials[i] = (int) f;
         }
-        System.out.println(profit);
-        return Integer.toString(profit);
+
     }
+
+    // Choose(n, k) = n! / (k! * (n-k)!)
+    public static long nCk(int n, int k) {
+
+        if (n < k) {
+            return 0;
+        }
+
+        long a = BigInteger.valueOf(factorials[k]).modInverse(MOD).longValue();
+        long b = BigInteger.valueOf(factorials[n - k]).modInverse(MOD).longValue();
+
+        // Left to right associativity between * and %
+        return factorials[n] * a % mod * b % mod;
+
+    }
+
     public static void main(String[] args) {
+
+        calculateFactorials();
+        System.out.println(nCk(12, 2));
+
         countCombinations(2, 3);
         countCombinations(2, 1);
-        countCombinations(1, 1); 
+        countCombinations(1, 1);
+        countCombinations(3, 3); 
+
+    }
+        
+    public static String countCombinations(int strikes, int expiries) {
+        BigInteger profit = new BigInteger("0");
+        for (int i = 2; i <= (strikes * expiries * 2); i++) {
+            long value = nCk(strikes * expiries * 2, i);
+            System.out.println(value);
+            //BigInteger val = new BigInteger(""+nCk(strikes * expiries * 2, i));
+            //profit = profit.add(val);
+        }
+        return "";
     }
 }

@@ -34,23 +34,21 @@ public class OptionCombinations {
     public static void main(String[] args) {
 
         calculateFactorials();
-        System.out.println(nCk(12, 2));
-
-        countCombinations(2, 3);
-        countCombinations(2, 1);
-        countCombinations(1, 1);
-        countCombinations(3, 3); 
-
+        System.out.println(countCombinations(2, 1));
+        System.out.println(countCombinations(1, 1));
+        System.out.println(countCombinations(3, 2));
+        System.out.println(countCombinations(2, 3));
+        System.out.println(countCombinations(50, 1000));
+        System.out.println(countCombinations(0, 3));
     }
         
     public static String countCombinations(int strikes, int expiries) {
         BigInteger profit = new BigInteger("0");
-        for (int i = 2; i <= (strikes * expiries * 2); i++) {
-            long value = nCk(strikes * expiries * 2, i);
-            System.out.println(value);
-            //BigInteger val = new BigInteger(""+nCk(strikes * expiries * 2, i));
-            //profit = profit.add(val);
+        for (int i = 1; i < (strikes * expiries * 2); i++) {
+            BigInteger val = new BigInteger(""+nCk(strikes * expiries * 2, i));
+            profit = profit.add(val);
+            profit = profit.subtract(new BigInteger("1"));
         }
-        return "";
+        return profit.toString();
     }
 }
